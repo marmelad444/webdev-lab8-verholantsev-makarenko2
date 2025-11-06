@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация - Маркетплейс</title>
+    <style>
+        .auth-container {
+            max-width: 450px;
+            margin: 80px auto;
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .auth-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .auth-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .auth-subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-label .optional {
+            color: #95a5a6;
+            font-weight: 400;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #3498db;
+        }
+
+        .form-input.error {
+            border-color: #e74c3c;
+        }
+
+        .form-input.success {
+            border-color: #27ae60;
+        }
+
+        .form-hint {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 6px;
+        }
+
+        .form-error {
+            font-size: 12px;
+            color: #e74c3c;
+            margin-top: 6px;
+            display: none;
+        }
+
+        .form-error.active {
+            display: block;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 8px;
+        }
+
+        .btn-submit:hover {
+            background-color: #229954;
+        }
+
+        .btn-submit:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+
+        .auth-divider {
+            text-align: center;
+            margin: 24px 0;
+            color: #7f8c8d;
+            font-size: 14px;
+            position: relative;
+        }
+
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: #ecf0f1;
+        }
+
+        .auth-divider::before {
+            left: 0;
+        }
+
+        .auth-divider::after {
+            right: 0;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 24px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .auth-link a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .auth-link a:hover {
+            text-decoration: underline;
+        }
+
+        .password-strength {
+            height: 4px;
+            background-color: #ecf0f1;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .password-strength-bar.weak {
+            width: 33%;
+            background-color: #e74c3c;
+        }
+
+        .password-strength-bar.medium {
+            width: 66%;
+            background-color: #f39c12;
+        }
+
+        .password-strength-bar.strong {
+            width: 100%;
+            background-color: #27ae60;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .alert.active {
+            display: block;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-icon">👤</div>
+            <h1 class="auth-title">Регистрация</h1>
+            <p class="auth-subtitle">Создайте новый аккаунт</p>
+        </div>
+
+        <div class="alert alert-error" id="error-alert">
+            Такое имя пользователя уже занято
+        </div>
+
+        <form id="register-form">
+            <div class="form-group">
+                <label class="form-label">Имя пользователя</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    name="username"
+                    placeholder="Введите имя пользователя"
+                    minlength="3"
+                    required
+                    autocomplete="username"
+                >
+                <div class="form-hint">Минимум 3 символа</div>
+                <div class="form-error">Имя пользователя должно быть не менее 3 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email <span class="optional">(необязательно)</span></label>
+                <input 
+                    type="email" 
+                    class="form-input" 
+                    name="email"
+                    placeholder="example@email.com"
+                    autocomplete="email"
+                >
+                <div class="form-error">Введите корректный email</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Пароль</label>
+                <input 
+                    type="password" 
+                    class="form-input" 
+                    name="password"
+                    placeholder="Введите пароль"
+                    minlength="6"
+                    required
+                    autocomplete="new-password"
+                >
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="password-strength-bar"></div>
+                </div>
+                <div class="form-hint">Минимум 6 символов</div>
+                <div class="form-error">Пароль должен быть не менее 6 символов</div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Подтверждение пароля</label>
+                <input 
+                    type="password" 
+                    class="form-input" 
+                    name="confirmPassword"
+                    placeholder="Повторите пароль"
+                    required
+                    autocomplete="new-password"
+                >
+                <div class="form-error">Пароли не совпадают</div>
+            </div>
+
+            <button type="submit" class="btn-submit">Зарегистрироваться</button>
+        </form>
+
+        <div class="auth-divider">или</div>
+
+        <div class="auth-link">
+            Уже есть аккаунт? <a href="/login">Войти</a>
+        </div>
+    </div>
+
+</body>
+</html>

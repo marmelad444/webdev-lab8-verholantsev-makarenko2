@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ноутбук Dell XPS 15 - Маркетплейс</title>
+    <style>
+        .back-link {
+            color: #3498db;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .item-detail {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 32px;
+        }
+
+        .item-image-large {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .item-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: #d4edda;
+            color: #155724;
+            width: fit-content;
+        }
+
+        .item-title-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .item-seller-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .seller-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .seller-details {
+            flex: 1;
+        }
+
+        .seller-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .seller-date {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .item-description-full {
+            color: #555;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .price-section {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .starting-price {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .current-price {
+            font-size: 40px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 16px;
+        }
+
+        .highest-bid {
+            font-size: 18px;
+            color: #e74c3c;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .bid-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bid-input {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .bid-input:focus {
+            border-color: #3498db;
+        }
+
+        .btn-bid {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-bid:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .bids-section {
+            padding: 32px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .bids-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bids-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .bids-count {
+            background-color: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .bids-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bid-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .bid-item.highest-bid-item {
+            background-color: #fff3cd;
+            border-left-color: #f39c12;
+        }
+
+        .bid-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bid-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #7f8c8d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .bid-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bid-username {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .bid-time {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .bid-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .highest-badge {
+            background-color: #f39c12;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .no-bids {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .item-header {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-link">← Вернуться к списку товаров</a>
+
+    <div class="item-detail">
+        <div class="item-header">
+            <div>
+                <img src="https://via.placeholder.com/600x400/3498db/ffffff?text=Laptop" alt="Ноутбук Dell XPS 15" class="item-image-large">
+            </div>
+
+            <div class="item-info">
+                <span class="item-status">Активно</span>
+                
+                <h1 class="item-title-large">Ноутбук Dell XPS 15</h1>
+                
+                <div class="item-seller-info">
+                    <div class="seller-avatar">TS</div>
+                    <div class="seller-details">
+                        <div class="seller-name">techseller</div>
+                        <div class="seller-date">Опубликовано: 15 октября 2025</div>
+                    </div>
+                </div>
+
+                <div class="item-description-full">
+                    Мощный ноутбук для работы и игр в отличном состоянии. 
+                    
+                    <br><br>
+                    
+                    <strong>Характеристики:</strong>
+                    <ul>
+                        <li>Процессор: Intel Core i7-12700H (12 ядер)</li>
+                        <li>Оперативная память: 16GB DDR5</li>
+                        <li>Видеокарта: NVIDIA GeForce RTX 3050 (4GB)</li>
+                        <li>Накопитель: 512GB NVMe SSD</li>
+                        <li>Дисплей: 15.6" FHD (1920x1080), 144Hz</li>
+                        <li>Операционная система: Windows 11 Pro</li>
+                    </ul>
+
+                    <br>
+                    
+                    Ноутбук используется около года, в идеальном состоянии. Все аксессуары в комплекте: зарядное устройство, коробка, документы. 
+                    Гарантия действует еще 1 год.
+                </div>
+
+                <div class="price-section">
+                    <div class="starting-price">Начальная цена:</div>
+                    <div class="current-price">65 000 ₽</div>
+                    <div class="highest-bid">Текущая ставка: 70 000 ₽</div>
+
+                    <form class="bid-form">
+                        <input 
+                            type="number" 
+                            class="bid-input" 
+                            placeholder="Введите вашу ставку (мин. 70 001 ₽)"
+                            min="70001"
+                            step="100"
+                        >
+                        <button type="submit" class="btn-bid">Сделать ставку</button>
+                    </form>
+                </div>
+
+                <!-- Owner actions (показывать только владельцу) -->
+                <!-- <button class="btn-delete">Удалить товар</button> -->
+            </div>
+        </div>
+
+        <div class="bids-section">
+            <div class="bids-header">
+                <h2 class="bids-title">История ставок</h2>
+                <span class="bids-count">5</span>
+            </div>
+
+            <div class="bids-list">
+                <div class="bid-item highest-bid-item">
+                    <div class="bid-user">
+                        <div class="bid-avatar">BB</div>
+                        <div class="bid-details">
+                            <span class="bid-username">buyer_best</span>
+                            <span class="bid-time">2 часа назад</span>
+                        </div>
+                        <span class="highest-badge">🏆 Лидирует</span>
+                    </div>
+                    <div class="bid-amount">70 000 ₽</div>
+                </div>
+
+                <div class="bid-item">
+                    <div class="bid-user">
+                        <div class="bid-avatar">JD</div>
+                        <div class="bid-details">
+                            <span class="bid-username">john_doe</span>
+                            <span class="bid-time">5 часов назад</span>
+                        </div>
+                    </div>
+                    <div class="bid-amount">68 000 ₽</div>
+                </div>
+
+                <div class="bid-item">
+                    <div class="bid-user">
+                        <div class="bid-avatar">AL</div>
+                        <div class="bid-details">
+                            <span class="bid-username">alice_tech</span>
+                            <span class="bid-time">1 день назад</span>
+                        </div>
+                    </div>
+                    <div class="bid-amount">67 000 ₽</div>
+                </div>
+
+                <div class="bid-item">
+                    <div class="bid-user">
+                        <div class="bid-avatar">MK</div>
+                        <div class="bid-details">
+                            <span class="bid-username">mike_k</span>
+                            <span class="bid-time">1 день назад</span>
+                        </div>
+                    </div>
+                    <div class="bid-amount">66 000 ₽</div>
+                </div>
+
+                <div class="bid-item">
+                    <div class="bid-user">
+                        <div class="bid-avatar">ST</div>
+                        <div class="bid-details">
+                            <span class="bid-username">sarah_tech</span>
+                            <span class="bid-time">2 дня назад</span>
+                        </div>
+                    </div>
+                    <div class="bid-amount">65 500 ₽</div>
+                </div>
+            </div>
+
+            <!-- Empty state for no bids -->
+            <!-- <div class="no-bids">
+                <p>Ставок пока нет. Станьте первым!</p>
+            </div> -->
+        </div>
+    </div>
+</body>
+</html>

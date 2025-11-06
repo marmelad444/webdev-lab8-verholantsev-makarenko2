@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои ставки - Маркетплейс</title>
+    <style>
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            color: #7f8c8d;
+            font-size: 16px;
+        }
+
+        .bids-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .summary-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #3498db;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .summary-label {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .summary-card.winning {
+            background-color: #d4edda;
+        }
+
+        .summary-card.winning .summary-value {
+            color: #27ae60;
+        }
+
+        .bids-list {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .bid-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #ecf0f1;
+            transition: background-color 0.2s;
+        }
+
+        .bid-item:last-child {
+            border-bottom: none;
+        }
+
+        .bid-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .bid-item.winning {
+            background-color: #d4edda;
+        }
+
+        .bid-item.winning:hover {
+            background-color: #c3e6cb;
+        }
+
+        .bid-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            background-color: #ecf0f1;
+            margin-right: 20px;
+        }
+
+        .bid-item-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .bid-item-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .bid-item-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .bid-item-title:hover {
+            color: #3498db;
+        }
+
+        .winning-badge {
+            background-color: #27ae60;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .outbid-badge {
+            background-color: #e74c3c;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .bid-item-meta {
+            display: flex;
+            gap: 20px;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .bid-item-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bid-item-amount {
+            text-align: right;
+            min-width: 120px;
+        }
+
+        .bid-amount {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27ae60;
+            display: block;
+        }
+
+        .bid-status {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 4px;
+        }
+
+        .current-highest {
+            color: #e74c3c;
+            font-weight: 600;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .no-bids {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        .no-bids-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .no-bids h2 {
+            color: #2c3e50;
+            margin-bottom: 12px;
+        }
+
+        .no-bids p {
+            color: #7f8c8d;
+            margin-bottom: 24px;
+        }
+
+        .btn-browse {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+
+        .btn-browse:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-header">
+        <h1>Мои ставки</h1>
+        <p class="page-subtitle">История ваших ставок на товары</p>
+    </div>
+
+    <!-- Summary -->
+    <div class="bids-summary">
+        <div class="summary-card">
+            <span class="summary-value">8</span>
+            <span class="summary-label">Всего ставок</span>
+        </div>
+        <div class="summary-card winning">
+            <span class="summary-value">3</span>
+            <span class="summary-label">Лидирующих ставок</span>
+        </div>
+        <div class="summary-card">
+            <span class="summary-value">185 000 ₽</span>
+            <span class="summary-label">Общая сумма</span>
+        </div>
+    </div>
+
+    <!-- Bids List -->
+    <div class="bids-list">
+        <!-- Bid 1 - Winning -->
+        <div class="bid-item winning">
+            <img src="https://via.placeholder.com/80x80/3498db/ffffff?text=Laptop" alt="Ноутбук" class="bid-item-image">
+            <div class="bid-item-content">
+                <div class="bid-item-header">
+                    <a href="/items/1" class="bid-item-title">Ноутбук Dell XPS 15</a>
+                    <span class="winning-badge">🏆 Лидирую</span>
+                </div>
+                <div class="bid-item-meta">
+                    <span>⏰ 2 часа назад</span>
+                    <span>💰 Начальная: 65 000 ₽</span>
+                </div>
+            </div>
+            <div class="bid-item-amount">
+                <span class="bid-amount">70 000 ₽</span>
+                <span class="bid-status">Моя ставка</span>
+            </div>
+        </div>
+
+        <!-- Bid 2 - Outbid -->
+        <div class="bid-item">
+            <img src="https://via.placeholder.com/80x80/e74c3c/ffffff?text=iPhone" alt="iPhone" class="bid-item-image">
+            <div class="bid-item-content">
+                <div class="bid-item-header">
+                    <a href="/items/2" class="bid-item-title">iPhone 14 Pro 256GB</a>
+                    <span class="outbid-badge">Перебита</span>
+                </div>
+                <div class="bid-item-meta">
+                    <span>⏰ 1 день назад</span>
+                    <span>💰 Начальная: 85 000 ₽</span>
+                </div>
+            </div>
+            <div class="bid-item-amount">
+                <span class="bid-amount">88 000 ₽</span>
+                <span class="bid-status">Моя ставка</span>
+                <div class="current-highest">Текущая: 90 000 ₽</div>
+            </div>
+        </div>
+
+        <!-- Bid 3 - Winning -->
+        <div class="bid-item winning">
+            <img src="https://via.placeholder.com/80x80/f39c12/ffffff?text=Watch" alt="Apple Watch" class="bid-item-image">
+            <div class="bid-item-content">
+                <div class="bid-item-header">
+                    <a href="/items/5" class="bid-item-title">Apple Watch Series 8</a>
+                    <span class="winning-badge">🏆 Лидирую</span>
+                </div>
+                <div class="bid-item-meta">
+                    <span>⏰ 3 часа назад</span>
+                    <span>💰 Начальная: 35 000 ₽</span>
+                </div>
+            </div>
+            <div class="bid-item-amount">
+                <span class="bid-amount">37 000 ₽</span>
+                <span class="bid-status">Моя ставка</span>
+            </div>
+        </div>
+
+        <!-- Bid 4 - Winning -->
+        <div class="bid-item winning">
+            <img src="https://via.placeholder.com/80x80/1abc9c/ffffff?text=Camera" alt="Камера" class="bid-item-image">
+            <div class="bid-item-content">
+                <div class="bid-item-header">
+                    <a href="/items/6" class="bid-item-title">Canon EOS R6</a>
+                    <span class="winning-badge">🏆 Лидирую</span>
+                </div>
+                <div class="bid-item-meta">
+                    <span>⏰ 5 часов назад</span>
+                    <span>💰 Начальная: 150 000 ₽</span>
+                </div>
+            </div>
+            <div class="bid-item-amount">
+                <span class="bid-amount">155 000 ₽</span>
+                <span class="bid-status">Моя ставка</span>
+            </div>
+        </div>
+
+        <!-- Bid 5 - Outbid -->
+        <div class="bid-item">
+            <img src="https://via.placeholder.com/80x80/9b59b6/ffffff?text=Headphones" alt="Наушники" class="bid-item-image">
+            <div class="bid-item-content">
+                <div class="bid-item-header">
+                    <a href="/items/4" class="bid-item-title">Sony WH-1000XM5</a>
+                    <span class="outbid-badge">Перебита</span>
+                </div>
+                <div class="bid-item-meta">
+                    <span>⏰ 2 дня назад</span>
+                    <span>💰 Начальная: 25 000 ₽</span>
+                </div>
+            </div>
+            <div class="bid-item-amount">
+                <span class="bid-amount">26 000 ₽</span>
+                <span class="bid-status">Моя ставка</span>
+                <div class="current-highest">Текущая: 27 000 ₽</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Empty State (закомментирован) -->
+    <!-- 
+    <div class="no-bids">
+        <div class="no-bids-icon">💸</div>
+        <h2>Вы еще не делали ставок</h2>
+        <p>Просмотрите доступные товары и сделайте первую ставку!</p>
+        <a href="/" class="btn-browse">Посмотреть товары</a>
+    </div>
+    -->
+</body>
+</html>

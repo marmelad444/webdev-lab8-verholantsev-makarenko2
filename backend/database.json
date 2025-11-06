@@ -1,0 +1,13 @@
+{
+  "items": [],
+  "bids": [],
+  "users": [
+    {
+      "id": 1,
+      "username": "testuser",
+      "email": "test@example.com",
+      "password": "$2b$10$EgVDQPfrj9sgt3bDDXjX9egBZ5bL0JS.c/Vmgas3mS1YoAi8V9K8.",
+      "createdAt": "2025-10-20T06:53:56.986Z"
+    }
+  ]
+}
