@@ -1,0 +1,287 @@
+        .back-link {
+            color: #3498db;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .item-detail {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .item-header {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            padding: 32px;
+        }
+
+        .item-image-large {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            background-color: #ecf0f1;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .item-status {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            background-color: #d4edda;
+            color: #155724;
+            width: fit-content;
+        }
+
+        .item-title-large {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .item-seller-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .seller-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .seller-details {
+            flex: 1;
+        }
+
+        .seller-name {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .seller-date {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .item-description-full {
+            color: #555;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .price-section {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .starting-price {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .current-price {
+            font-size: 40px;
+            font-weight: bold;
+            color: #27ae60;
+            margin-bottom: 16px;
+        }
+
+        .highest-bid {
+            font-size: 18px;
+            color: #e74c3c;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .bid-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bid-input {
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .bid-input:focus {
+            border-color: #3498db;
+        }
+
+        .btn-bid {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-bid:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-delete {
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .bids-section {
+            padding: 32px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .bids-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .bids-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .bids-count {
+            background-color: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .bids-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .bid-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .bid-item.highest-bid-item {
+            background-color: #fff3cd;
+            border-left-color: #f39c12;
+        }
+
+        .bid-user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .bid-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: #7f8c8d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .bid-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bid-username {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .bid-time {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        .bid-amount {
+            font-size: 20px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        .highest-badge {
+            background-color: #f39c12;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 12px;
+        }
+
+        .no-bids {
+            text-align: center;
+            padding: 40px 20px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .item-header {
+                grid-template-columns: 1fr;
+            }
+        }
