@@ -1,83 +1,93 @@
-import "./SignIn.css"
-import { useState } from "react"
-import Button from "../components/Button"
-import Input from "../components/Input"
-import { Link, useNavigate } from "react-router-dom"
-import { useUserStore } from "../store/useUserStore"
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { api } from '../api/api'
+import { useUserStore } from '../store/useUserStore'
+import './SignIn.css'
 
+const SignIn = () => {
+  const navigate = useNavigate()
+  const { setSession } = useUserStore()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-const SignIn = () =>{
-    const [error, setError] = useState("")
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+    setLoading(true)
+    const formData = new FormData(event.currentTarget)
+    const credentials = {
+      username: formData.get('username'),
+      password: formData.get('password'),
+    }
+    try {
+      const data = await api.loginUser(credentials)
+      setSession(data)
+      navigate('/')
+    } catch (requestError) {
+      console.error(requestError)
+      setError(requestError.response?.data?.error || 'Не удалось войти')
+    } finally {
+      setLoading(false)
+    }
+  }
 
-    const navigate = useNavigate()
-    const { setSession } = useUserStore()
+  return (
+    <div className="auth-container">
+      <div className="auth-header">
+        <div className="auth-icon">🔐</div>
+        <h1 className="auth-title">Вход</h1>
+        <p className="auth-subtitle">Войдите в свой аккаунт</p>
+      </div>
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault()
-        setError("")
+      {error && (
+        <div className="alert alert-error active" id="error-alert">
+          {error}
+        </div>
+      )}
 
-        const user = {
-            username: e.target.username.value,
-            password: e.target.password.value
-        }
-        try {
-            const data = await ap.loginUser(user)
-            setSession(data.data)
-            navigate("/")
-        } catch (error) {
-            console.error(error)
-            setError(error.response.data.error)
-        }
-    }   
-    return(
-        <div className="auth-container">
-        <div className="auth-header">
-            <div className="auth-icon">🔐</div>
-            <h1 className="auth-title">Вход</h1>
-            <p className="auth-subtitle">Войдите в свой аккаунт</p>
+      <form id="login-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="form-label" htmlFor="username">
+            Имя пользователя
+          </label>
+          <input
+            type="text"
+            className="form-input"
+            id="username"
+            name="username"
+            placeholder="Введите имя пользователя"
+            required
+            autoComplete="username"
+          />
         </div>
 
-        <div className="alert alert-error" id="error-alert">
-            Неверное имя пользователя или пароль
+        <div className="form-group">
+          <label className="form-label" htmlFor="password">
+            Пароль
+          </label>
+          <input
+            type="password"
+            className="form-input"
+            id="password"
+            name="password"
+            placeholder="Введите пароль"
+            required
+            autoComplete="current-password"
+          />
         </div>
 
-        <form id="login-form">
-            <div className="form-group">
-                <label class="form-label">Имя пользователя</label>
-                <Input 
-                    type="text" 
-                    class="form-input" 
-                    name="username"
-                    placeholder="Введите имя пользователя"
-                    required
-                    autocomplete="username"
-                />
-                <div className="form-error">Введите имя пользователя</div>
-            </div>
+        <button type="submit" className="btn-submit" disabled={loading}>
+          {loading ? 'Входим...' : 'Войти'}
+        </button>
+      </form>
 
-            <div className="form-group">
-                <label className="form-label">Пароль</label>
-                <Input 
-                    type="password" 
-                    class="form-input" 
-                    name="password"
-                    placeholder="Введите пароль"
-                    required
-                    autocomplete="current-password"
-                />
-                <div className="form-error">Введите пароль</div>
-            </div>
+      <div className="auth-divider">или</div>
 
-            <Button type="submit" class="btn-submit">Войти</Button>
-        </form>
-
-        <div className="auth-divider">или</div>
-
-        <div className="auth-link">
-            Нет аккаунта? <Link to = "/SignUp">Зарегистрироваться</Link>
-        </div>
+      <div className="auth-link">
+        Нет аккаунта? <Link to="/signup">Зарегистрироваться</Link>
+      </div>
     </div>
-    )
+  )
 }
 
 export default SignIn

@@ -1,121 +1,134 @@
-import { useState } from "react"
-import Button from "../components/Button"
-import Input from "../components/Input"
-import { api } from "../api/api"
-import { Link, useNavigate } from "react-router-dom"
-import { useUserStore } from "../store/useUserStore"
-import "./SignUp.css"
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { api } from '../api/api'
+import { useUserStore } from '../store/useUserStore'
+import './SignUp.css'
 
+const SignUp = () => {
+  const navigate = useNavigate()
+  const { setSession } = useUserStore()
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-const SignUp = () =>{
-    const [error, setError] = useState("")
-    const navigate = useNavigate()
-    const { setSession } = useUserStore()
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setError('')
+    const formData = new FormData(event.currentTarget)
 
-    const handleSubmit = async (e) =>{
-        e.preventDefault()
-        setError("")
+    if (formData.get('password') !== formData.get('confirmPassword')) {
+      setError('Пароли не совпадают')
+      return
+    }
 
-        if (e.target.password.value !== e.target.password2.value){
-            setError("Пароли не совпадают")
-            return
-        }
+    const payload = {
+      username: formData.get('username'),
+      email: formData.get('email') || undefined,
+      password: formData.get('password'),
+    }
 
-        const user = {
-            username: e.target.username.value,
-            email: e.target.email.value,
-            password: e.target.password.value
-        }
-        try {
-            const data = await api.registerUser(user)
-            setSession(data.data)
-            navigate("/")
-        } catch (error) {
-            setError(error.response.data.error)
-            console.error(error)
-        }
-    }   
-    return(
-        <div className="auth-container">
-        <div className="auth-header">
-            <div className="auth-icon">👤</div>
-            <h1 className="auth-title">Регистрация</h1>
-            <p className="auth-subtitle">Создайте новый аккаунт</p>
+    setLoading(true)
+    try {
+      const data = await api.registerUser(payload)
+      setSession(data)
+      navigate('/')
+    } catch (requestError) {
+      console.error(requestError)
+      setError(requestError.response?.data?.error || 'Не удалось зарегистрироваться')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="auth-container">
+      <div className="auth-header">
+        <div className="auth-icon">👤</div>
+        <h1 className="auth-title">Регистрация</h1>
+        <p className="auth-subtitle">Создайте новый аккаунт</p>
+      </div>
+
+      {error && (
+        <div className="alert alert-error active" id="error-alert">
+          {error}
+        </div>
+      )}
+
+      <form id="register-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="form-label" htmlFor="signup-username">
+            Имя пользователя
+          </label>
+          <input
+            type="text"
+            className="form-input"
+            id="signup-username"
+            name="username"
+            placeholder="Введите имя пользователя"
+            minLength={3}
+            required
+            autoComplete="username"
+          />
+          <div className="form-hint">Минимум 3 символа</div>
         </div>
 
-        <div className="alert alert-error" id="error-alert">
-            Такое имя пользователя уже занято
+        <div className="form-group">
+          <label className="form-label" htmlFor="signup-email">
+            Email <span className="optional">(необязательно)</span>
+          </label>
+          <input
+            type="email"
+            className="form-input"
+            id="signup-email"
+            name="email"
+            placeholder="example@email.com"
+            autoComplete="email"
+          />
         </div>
 
-        <form id="register-form">
-            <div className="form-group">
-                <label className="form-label">Имя пользователя</label>
-                <Input 
-                    type="text" 
-                    className="form-input" 
-                    name="username"
-                    placeholder="Введите имя пользователя"
-                    minlength="3"
-                    required
-                    autocomplete="username"
-                />
-                <div className="form-hint">Минимум 3 символа</div>
-                <div className="form-error">Имя пользователя должно быть не менее 3 символов</div>
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">Email <span className="optional">(необязательно)</span></label>
-                <Input 
-                    type="email" 
-                    className="form-input" 
-                    name="email"
-                    placeholder="example@email.com"
-                    autocomplete="email"
-                />
-                <div className="form-error">Введите корректный email</div>
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">Пароль</label>
-                <Input 
-                    type="password" 
-                    className="form-input" 
-                    name="password"
-                    placeholder="Введите пароль"
-                    minlength="6"
-                    required
-                    autocomplete="new-password"
-                />
-                <div className="password-strength">
-                    <div className="password-strength-bar" id="password-strength-bar"></div>
-                </div>
-                <div className="form-hint">Минимум 6 символов</div>
-                <div className="form-error">Пароль должен быть не менее 6 символов</div>
-            </div>
-
-            <div className="form-group">
-                <label className="form-label">Подтверждение пароля</label>
-                <Input 
-                    type="password" 
-                    className="form-input" 
-                    name="confirmPassword"
-                    placeholder="Повторите пароль"
-                    required
-                    autocomplete="new-password"
-                />
-                <div className="form-error">Пароли не совпадают</div>
-            </div>
-
-            <Button type="submit" className="btn-submit">Зарегистрироваться</Button>
-        </form>
-
-        <div className="auth-divider">или</div>
-
-        <div className="auth-link">
-            Уже есть аккаунт? <Link to="/SignIn">Войти</Link>
+        <div className="form-group">
+          <label className="form-label" htmlFor="signup-password">
+            Пароль
+          </label>
+          <input
+            type="password"
+            className="form-input"
+            id="signup-password"
+            name="password"
+            placeholder="Введите пароль"
+            minLength={6}
+            required
+            autoComplete="new-password"
+          />
+          <div className="form-hint">Минимум 6 символов</div>
         </div>
+
+        <div className="form-group">
+          <label className="form-label" htmlFor="signup-password-confirm">
+            Подтверждение пароля
+          </label>
+          <input
+            type="password"
+            className="form-input"
+            id="signup-password-confirm"
+            name="confirmPassword"
+            placeholder="Повторите пароль"
+            required
+            autoComplete="new-password"
+          />
+        </div>
+
+        <button type="submit" className="btn-submit" disabled={loading}>
+          {loading ? 'Создаем...' : 'Зарегистрироваться'}
+        </button>
+      </form>
+
+      <div className="auth-divider">или</div>
+
+      <div className="auth-link">
+        Уже есть аккаунт? <Link to="/signin">Войти</Link>
+      </div>
     </div>
-    )
+  )
 }
 
 export default SignUp
